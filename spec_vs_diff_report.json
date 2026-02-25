@@ -1,0 +1,136 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-25T08:36:18.739Z",
+  "summary": "The diff implements the vast majority of the requested requirements. All 9 REQs have substantial implementation. However, several acceptance criteria deviate from spec: enemy bot speed uses delta-based movement (4*delta) instead of the specified constant 0.3 per frame; enemy proximity damage is throttled/batched rather than per-frame; zone damage rate uses delta-scaled values with throttling rather than 1 HP/frame; some HUD elements are positioned top-right rather than exclusively top-left. The zone radius shrink rate uses 1.5*delta rather than the specified 0.02 per frame.",
+  "missing_requirements": [
+    {
+      "id": "REQ-5",
+      "requirement": "Chasing enemies move toward the player at speed 0.3",
+      "reason": "EnemyBots.tsx uses enemy.mesh.position.addScaledVector(dir, 4 * delta) which is delta-time based. The AC specifies a fixed speed of 0.3 units per frame, not 4 units per second.",
+      "evidence": [
+        "frontend/src/components/EnemyBots.tsx"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Enemies within 3 units deal damage each frame based on hardcore setting (2 HP normal / 5 HP hardcore)",
+      "reason": "EnemyBots.tsx throttles damage to once per 500ms and uses values of 5 (normal) and 10 (hardcore) instead of the specified 2 HP (normal) / 5 HP (hardcore) per frame.",
+      "evidence": [
+        "frontend/src/components/EnemyBots.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Zone radius decreases by 0.02 each frame; out-of-zone damage is 1 HP/frame (normal) or 2 HP/frame (hardcore)",
+      "reason": "ZoneRing.tsx uses zoneRadiusRef.current - 1.5 * delta (time-based, not 0.02 per frame) and throttles zone damage to once per 500ms with values of 2/4 instead of 1/2 per frame.",
+      "evidence": [
+        "frontend/src/components/ZoneRing.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "HUD is positioned in the top-left corner over the game canvas",
+      "reason": "HUD.tsx positions Health/Armor/Stamina top-left but Enemies/Zone/FPS are placed in a hud-top-right panel, rather than all HUD elements being in the top-left.",
+      "evidence": [
+        "frontend/src/components/HUD.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Armor absorption mechanic: incoming damage is partially absorbed by armor (50% reduction up to armor value)",
+      "reason": "The spec does not define armor absorption mechanics. It only requires armor to be displayed in the HUD. GameScene.tsx implements damage absorption logic using armor.",
+      "evidence": [
+        "frontend/src/components/GameScene.tsx"
+      ]
+    },
+    {
+      "description": "Stamina bar displayed in HUD",
+      "reason": "REQ-8 specifies Health, Armor, Ammo, Enemies remaining, and FPS in the HUD. Stamina display was not listed as a HUD requirement.",
+      "evidence": [
+        "frontend/src/components/HUD.tsx"
+      ]
+    },
+    {
+      "description": "Zone radius displayed in HUD",
+      "reason": "REQ-8 specifies Health, Armor, Ammo, Enemies remaining, and FPS. Zone radius display in the HUD was not listed as a required HUD element.",
+      "evidence": [
+        "frontend/src/components/HUD.tsx"
+      ]
+    },
+    {
+      "description": "Visual crosshair rendered over the game canvas",
+      "reason": "The spec does not mention a crosshair overlay as a requirement.",
+      "evidence": [
+        "frontend/src/components/GameScene.tsx"
+      ]
+    },
+    {
+      "description": "Game-over ELIMINATED screen displayed when player health reaches 0",
+      "reason": "The spec does not define a game-over screen or ELIMINATED state as a requirement.",
+      "evidence": [
+        "frontend/src/components/GameScene.tsx"
+      ]
+    },
+    {
+      "description": "Enemy bob/float animation each frame",
+      "reason": "The spec does not request any animation for enemy bots beyond movement toward the player.",
+      "evidence": [
+        "frontend/src/components/EnemyBots.tsx"
+      ]
+    },
+    {
+      "description": "Zone closing warning displayed in HUD when zone radius is below 20",
+      "reason": "The spec does not request a zone closing warning message in the HUD.",
+      "evidence": [
+        "frontend/src/components/HUD.tsx"
+      ]
+    },
+    {
+      "description": "Hardcore mode warning badge displayed in HUD",
+      "reason": "The spec does not request a hardcore badge or indicator in the HUD.",
+      "evidence": [
+        "frontend/src/components/HUD.tsx"
+      ]
+    },
+    {
+      "description": "Grid helper overlay rendered on terrain",
+      "reason": "The spec does not request a grid overlay on the terrain.",
+      "evidence": [
+        "frontend/src/components/GameScene.tsx"
+      ]
+    },
+    {
+      "description": "Controls reference panel displayed in main menu",
+      "reason": "The spec does not list a controls reference section as a requirement for the main menu.",
+      "evidence": [
+        "frontend/src/components/MainMenu.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/EnemyBots.tsx",
+    "frontend/src/components/GameScene.tsx",
+    "frontend/src/components/HUD.tsx",
+    "frontend/src/components/LootCrates.tsx",
+    "frontend/src/components/MainMenu.tsx",
+    "frontend/src/components/PlayerController.tsx",
+    "frontend/src/components/ZoneRing.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useGameLoop.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "frontend/src/App.tsx": "Root app component that manages game state (menu vs active game), stores quality/hardcore settings, and renders either MainMenu or GameScene based on whether the game has started.",
+  "frontend/src/components/MainMenu.tsx": "Styled main menu with PRO BATTLE ROYALE title, graphics quality dropdown (Low/Medium/High/4K Ultra), hardcore mode checkbox toggle, controls reference, and a Deploy button that starts the game.",
+  "frontend/src/components/GameScene.tsx": "Main 3D game scene using React Three Fiber Canvas with terrain, fog, lighting, and all game subsystems (PlayerController, EnemyBots, LootCrates, ZoneRing, HUD). Manages shared game state (health, armor, ammo, enemies, fps) and renders game-over screen.",
+  "frontend/src/components/PlayerController.tsx": "First-person player controller using useFrame and useThree; handles WASD movement, pointer-lock mouse look (yaw/pitch), sprint with stamina depletion/recovery, and hitscan shooting via raycaster on click.",
+  "frontend/src/components/EnemyBots.tsx": "Spawns 15 red box enemy bots at random positions; each frame checks distance to player, transitions to chase state within 100 units, moves toward player at speed 4, and deals proximity damage when within 3 units. Removes dead enemies hit by raycaster.",
+  "frontend/src/components/LootCrates.tsx": "Renders 20 static green 1x1x1 box meshes at random positions on the terrain as decorative loot crates.",
+  "frontend/src/components/ZoneRing.tsx": "Manages the shrinking safe zone; renders a cyan ring boundary and red danger zone overlay, shrinks the radius over time, and deals damage to the player when outside the zone.",
+  "frontend/src/components/HUD.tsx": "Heads-up display overlay showing HP/Armor/Stamina bars, ammo counter, enemies remaining, zone radius, FPS, hardcore badge, and zone-closing warning — all styled in cyan monospace on a semi-transparent dark panel.",
+  "frontend/src/hooks/useGameLoop.ts": "Minimal placeholder hook; actual game loop logic is handled within components via React Three Fiber's useFrame.",
+  "frontend/src/hooks/useQueries.ts": "Empty module placeholder since this game requires no backend queries (all logic is client-side).",
+  "frontend/src/index.css": "Global styles for the military/tactical dark theme: black background, cyan (#00ffcc) accents, Share Tech Mono and Rajdhani fonts, plus all custom CSS for menu, HUD, crosshair, game-over screen, and animations.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with Share Tech Mono/Rajdhani font families, glow box shadows, and the full OKLCH color token system for the tactical dark theme."
+}

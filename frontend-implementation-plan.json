@@ -1,0 +1,211 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "PRO Battle Royale - 3D FPS Battle Royale Game",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create a main menu screen with title, graphics quality selector, hardcore mode toggle, and deploy button",
+      "acceptanceCriteria": [
+        "Menu is centered on screen with a dark semi-transparent background and cyan (#00ffcc) border",
+        "Quality dropdown has four options: Low (1x), Medium (1.5x), High (2x), 4K Ultra (3x)",
+        "Hardcore Mode checkbox is visible and toggleable",
+        "Clicking 'Deploy' hides the menu and starts the 3D game scene"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MainMenu.tsx",
+          "operation": "create",
+          "description": "Create the main menu component with title 'PRO BATTLE ROYALE', graphics quality dropdown (Low/Medium/High/4K Ultra), hardcore mode checkbox, and Deploy button. Style with dark semi-transparent background, cyan (#00ffcc) borders, and center alignment. Include state for quality and hardcore settings, and pass these plus a startGame callback as props."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire MainMenu into the app. Add state to track whether the game is active (menuVisible). Render MainMenu when menuVisible is true, and pass it a startGame callback that sets menuVisible to false and passes selected quality/hardcore settings to the game scene."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement a 3D game world with large flat terrain, directional lighting, and atmospheric fog",
+      "acceptanceCriteria": [
+        "A large dark ground plane is rendered",
+        "Fog obscures distant objects",
+        "Scene is lit by a directional light positioned above"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "create",
+          "description": "Create the main 3D game scene using React Three Fiber. Add a Canvas component with a large PlaneGeometry (500x500 units) as the terrain, rotated flat on the ground with a dark material. Add a directional light positioned above the scene (position [10, 50, 10]) with intensity 1. Add fog to the scene (dark teal color 0x001a1a, near 50, far 300). Accept quality and hardcore props to configure rendering."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and render GameScene when menuVisible is false. Pass the selected quality and hardcore settings as props to GameScene."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement first-person player movement with WASD keys, pointer lock mouse look, sprint with stamina system",
+      "acceptanceCriteria": [
+        "W/A/S/D keys move the player in the corresponding direction relative to camera facing",
+        "Holding Shift doubles movement speed while stamina > 0",
+        "Stamina depletes while sprinting and regenerates otherwise",
+        "Mouse movement rotates the camera via pointer lock"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PlayerController.tsx",
+          "operation": "create",
+          "description": "Create a player controller component using React Three Fiber's useFrame and useThree hooks. Implement keyboard input tracking for W/A/S/D keys and Shift. Request pointer lock on mount and handle mouse movement for camera rotation (yaw/pitch). Implement movement logic: base speed, sprint multiplier (2x) when Shift is held and stamina > 0. Track stamina state (starts at 100): deplete by 0.5 per frame when sprinting, recover by 0.2 per frame otherwise. Use a PerspectiveCamera and update its position/rotation each frame. Accept a ref to expose player position for other components."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Add PlayerController as a child of the Canvas. Create a ref for the player to access position from other game logic components (enemies, zone checks). Ensure pointer lock is requested when the scene mounts."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement shooting mechanic with hitscan raycasting, ammo tracking, and enemy damage/removal",
+      "acceptanceCriteria": [
+        "Clicking fires a shot if ammo > 0",
+        "A raycaster from camera center detects enemy hits",
+        "Hit enemies lose 50 HP and are removed when HP reaches 0",
+        "Ammo counter decrements on each shot"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useShootingMechanic.ts",
+          "operation": "create",
+          "description": "Create a custom hook to handle shooting. Track ammo state (starts at 30). On click event, if ammo > 0, fire a raycaster from the camera center forward. Check for intersections with enemy objects. If an enemy is hit, reduce its health by 50 and decrement ammo. Return ammo state and a shoot function to be called on click."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Use the useShootingMechanic hook. Attach click event listener to the document to call the shoot function. Pass the enemies array to the hook so it can update enemy health. Remove enemies from the scene when their health reaches 0."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Spawn 15 enemy bots that chase the player within range and deal proximity damage",
+      "acceptanceCriteria": [
+        "15 red box enemies spawn at random positions on the map",
+        "Enemies within 100 units begin chasing the player",
+        "Chasing enemies move toward the player at speed 0.3",
+        "Enemies within 3 units deal damage each frame based on hardcore setting"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/EnemyBots.tsx",
+          "operation": "create",
+          "description": "Create a component that spawns 15 enemy bots as red box meshes (1x2x1 size) with MeshStandardMaterial color 0xff0000. Each bot has health (100) and state (idle/chase). Position bots randomly on the terrain within a 400x400 range. In useFrame, for each bot: calculate distance to player; if distance < 100, set state to chase and move toward player at speed 0.3; if distance < 3, deal damage to player (2 HP per frame in normal mode, 5 HP per frame in hardcore mode). Accept playerRef and hardcore props. Expose enemies array and onPlayerDamage callback."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Add EnemyBots component to the scene, passing playerRef and hardcore setting. Wire up the onPlayerDamage callback to reduce player health state. Track player health state (starts at 100)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Spawn 20 green loot crates randomly placed on the terrain",
+      "acceptanceCriteria": [
+        "20 green 1x1x1 box meshes appear at random positions on the terrain",
+        "Loot boxes are visible from a distance"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/LootCrates.tsx",
+          "operation": "create",
+          "description": "Create a component that spawns 20 loot crates as green box meshes (1x1x1 size) with MeshStandardMaterial color 0x00ff00. Position each crate randomly on the terrain within a 400x400 range at y=0.5. No pickup logic is required; crates are static decorative objects."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Add LootCrates component to the scene so the 20 green boxes are rendered."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement a shrinking safe zone that damages the player when outside",
+      "acceptanceCriteria": [
+        "Zone radius shrinks continuously over time",
+        "Player takes damage each frame while outside the zone",
+        "Hardcore mode doubles the out-of-zone damage"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useSafeZone.ts",
+          "operation": "create",
+          "description": "Create a custom hook to manage the safe zone. Track zoneRadius state starting at 100. In useFrame, decrement zoneRadius by 0.02 each frame. Accept playerRef and hardcore props. Calculate player's distance from origin each frame; if distance > zoneRadius, deal damage to player (1 HP per frame normal, 2 HP per frame hardcore). Return zoneRadius and a damage callback."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Use the useSafeZone hook, passing playerRef and hardcore setting. Wire the damage callback to reduce player health when the player is outside the zone."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Display a HUD overlay showing Health, Armor, Ammo, Enemies remaining, and FPS",
+      "acceptanceCriteria": [
+        "Health, Armor, Ammo, Enemies remaining, and FPS are all displayed",
+        "HUD updates every frame",
+        "HUD is positioned top-left over the 3D canvas",
+        "HUD text is styled in cyan (#00ffcc) to match the game theme"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/HUD.tsx",
+          "operation": "create",
+          "description": "Create a HUD overlay component that displays Health, Armor (fixed at 0 or a starting value), Ammo (current/max), Enemies remaining count, and live FPS. Position the HUD in the top-left corner using absolute positioning over the game canvas. Style text in cyan (#00ffcc) with monospace or bold sans-serif font. Accept health, armor, ammo, maxAmmo, enemiesRemaining, and fps as props. Use useFrame or a custom FPS tracker to compute frames per second."
+        },
+        {
+          "path": "frontend/src/components/GameScene.tsx",
+          "operation": "modify",
+          "description": "Render the HUD component, passing current health, armor, ammo, maxAmmo, enemies count, and fps. Track FPS using a frame time tracker in useFrame. Update HUD props each frame so the display is live."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Apply a consistent military/tactical dark visual theme with black backgrounds, cyan accents, and fullscreen canvas",
+      "acceptanceCriteria": [
+        "Overall color scheme uses black backgrounds with cyan (#00ffcc) accents",
+        "Game canvas fills the entire viewport",
+        "Menu and HUD use consistent typography and color",
+        "No visible overflow or scrollbars during gameplay"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add global styles for the military/tactical theme: set body and html to background black, color cyan (#00ffcc), margin 0, padding 0, overflow hidden, height 100%, width 100%. Use a monospace or bold sans-serif font family (e.g., 'Courier New', monospace). Ensure the canvas and all containers fill the viewport without scrollbars."
+        },
+        {
+          "path": "frontend/src/components/MainMenu.tsx",
+          "operation": "modify",
+          "description": "Apply inline or CSS styles to the menu: semi-transparent black background (rgba(0,0,0,0.8)), cyan (#00ffcc) border (2px solid), padding, centered positioning, and consistent typography matching the theme."
+        },
+        {
+          "path": "frontend/src/components/HUD.tsx",
+          "operation": "modify",
+          "description": "Ensure HUD text uses cyan (#00ffcc) color and monospace or bold sans-serif font. Position absolutely in the top-left corner with appropriate padding. Background can be transparent or semi-transparent black for readability."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Ensure the root App container uses full viewport dimensions (width 100vw, height 100vh) with black background and no overflow. The Canvas in GameScene should fill the container completely."
+        }
+      ]
+    }
+  ]
+}

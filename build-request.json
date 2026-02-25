@@ -1,0 +1,212 @@
+{
+  "kind": "build_request",
+  "title": "PRO Battle Royale - 3D FPS Battle Royale Game",
+  "projectName": "PRO Battle Royale",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a main menu screen with the title 'PRO BATTLE ROYALE', a Graphics quality selector (Low / Medium / High / 4K Ultra), a Hardcore Mode checkbox toggle, and a 'Deploy' button that starts the game.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "<div id=\"menu\">",
+          "<select id=\"quality\">",
+          "<input type=\"checkbox\" id=\"hardcore\">",
+          "<button onclick=\"startGame()\">Deploy</button>"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Menu is centered on screen with a dark semi-transparent background and cyan (#00ffcc) border",
+        "Quality dropdown has four options: Low (1x), Medium (1.5x), High (2x), 4K Ultra (3x)",
+        "Hardcore Mode checkbox is visible and toggleable",
+        "Clicking 'Deploy' hides the menu and starts the 3D game scene"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a 3D game world using Three.js / React Three Fiber with a large flat terrain (500x500 plane), directional lighting, and atmospheric fog (dark teal fog from distance 50 to 300).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "scene.fog = new THREE.Fog(0x001a1a,50,300)",
+          "new THREE.PlaneGeometry(500,500,50,50)",
+          "new THREE.DirectionalLight(0xffffff,1)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A large dark ground plane is rendered",
+        "Fog obscures distant objects",
+        "Scene is lit by a directional light positioned above"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement first-person player movement with WASD keys, pointer lock mouse look, sprint (Shift key) that depletes stamina, and stamina recovery when not sprinting.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "if(keys[\"w\"]) player.translateZ(-speed)",
+          "if(keys[\"Shift\"] && stamina>0){",
+          "stamina -= 0.5;",
+          "stamina += 0.2;"
+        ]
+      },
+      "acceptanceCriteria": [
+        "W/A/S/D keys move the player in the corresponding direction relative to camera facing",
+        "Holding Shift doubles movement speed while stamina > 0",
+        "Stamina depletes while sprinting and regenerates otherwise",
+        "Mouse movement rotates the camera via pointer lock"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement a shooting mechanic: left mouse click fires a hitscan ray from the camera center; each shot reduces ammo by 1; enemies hit lose 50 HP; enemies that reach 0 HP are removed from the scene.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "document.addEventListener(\"click\",shoot)",
+          "ammo--",
+          "hits[0].object.health -= 50",
+          "enemies = enemies.filter(e=>e!==hits[0].object)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking fires a shot if ammo > 0",
+        "A raycaster from camera center detects enemy hits",
+        "Hit enemies lose 50 HP and are removed when HP reaches 0",
+        "Ammo counter decrements on each shot"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Spawn 15 enemy bots as red box meshes randomly placed on the terrain. Bots idle until the player comes within 100 units, then chase the player. Bots deal damage (2 HP normal / 5 HP hardcore) per frame when within 3 units of the player.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "spawnEnemies(15)",
+          "new THREE.MeshStandardMaterial({color:0xff0000})",
+          "if(dist<100){ bot.state=\"chase\"; }",
+          "if(dist<3){ health -= hardcore?5:2; }"
+        ]
+      },
+      "acceptanceCriteria": [
+        "15 red box enemies spawn at random positions on the map",
+        "Enemies within 100 units begin chasing the player",
+        "Chasing enemies move toward the player at speed 0.3",
+        "Enemies within 3 units deal damage each frame based on hardcore setting"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Spawn 20 green loot crates as small box meshes randomly placed on the terrain. Loot crates are visible in the scene (pickup logic may be left as a future feature).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "spawnLoot(20)",
+          "new THREE.MeshStandardMaterial({color:0x00ff00})",
+          "box.position.set((Math.random()-0.5)*400,0.5,(Math.random()-0.5)*400)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "20 green 1x1x1 box meshes appear at random positions on the terrain",
+        "Loot boxes are visible from a distance"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement a shrinking safe zone: a radius value starts at 100 and decreases by 0.02 each frame. When the player's distance from origin exceeds the zone radius, the player takes continuous damage (1 HP/frame normal, 2 HP/frame hardcore).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "zoneRadius -= 0.02",
+          "if(player.position.length()>zoneRadius){ health -= hardcore?2:1; }"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Zone radius shrinks continuously over time",
+        "Player takes damage each frame while outside the zone",
+        "Hardcore mode doubles the out-of-zone damage"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Display a HUD overlay showing: current Health, Armor, Ammo (current/max), Enemies remaining count, and live FPS counter. The HUD should be positioned in the top-left corner over the game canvas.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "<div id=\"hud\">",
+          "document.getElementById(\"health\").innerText=\"Health: \"",
+          "document.getElementById(\"fps\").innerText=\"FPS: \""
+        ]
+      },
+      "acceptanceCriteria": [
+        "Health, Armor, Ammo, Enemies remaining, and FPS are all displayed",
+        "HUD updates every frame",
+        "HUD is positioned top-left over the 3D canvas",
+        "HUD text is styled in cyan (#00ffcc) to match the game theme"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply a consistent military/tactical dark visual theme throughout the UI: black backgrounds, cyan (#00ffcc) accent color for borders and text, monospace or bold sans-serif fonts, and a fullscreen canvas for the game renderer.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "background: black",
+          "color: #00ffcc",
+          "border: 2px solid #00ffcc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Overall color scheme uses black backgrounds with cyan (#00ffcc) accents",
+        "Game canvas fills the entire viewport",
+        "Menu and HUD use consistent typography and color",
+        "No visible overflow or scrollbars during gameplay"
+      ]
+    }
+  ],
+  "constraints": [
+    "Use Three.js (via React Three Fiber) for all 3D rendering",
+    "No backend state required — all game logic runs client-side in the frontend",
+    "Pointer lock must be requested when the game starts"
+  ],
+  "nonGoals": [
+    "Multiplayer or networked gameplay",
+    "Persistent player stats or leaderboards",
+    "Loot pickup / inventory system",
+    "Sound effects or music",
+    "Mobile or touch controls"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

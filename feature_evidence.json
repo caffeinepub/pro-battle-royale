@@ -1,0 +1,176 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-main-menu-screen-with-the-title-pro-battle-royale-a-graphics-quality-selector-low-medium-high-4k-ultra-a-hardcore-mode-checkbox-toggle-and-a-deploy-button-that-starts-the-game",
+      "featureTitle": "Create a main menu screen with the title 'PRO BATTLE ROYALE', a Graphics quality selector (Low / Medium / High / 4K Ultra), a Hardcore Mode checkbox toggle, and a 'Deploy' button that starts the game.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/MainMenu.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-3d-game-world-using-three-js-react-three-fiber-with-a-large-flat-terrain-500x500-plane-directional-lighting-and-atmospheric-fog-dark-teal-fog-from-distance-50-to-300",
+      "featureTitle": "Implement a 3D game world using Three.js / React Three Fiber with a large flat terrain (500x500 plane), directional lighting, and atmospheric fog (dark teal fog from distance 50 to 300).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/GameScene.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-first-person-player-movement-with-wasd-keys-pointer-lock-mouse-look-sprint-shift-key-that-depletes-stamina-and-stamina-recovery-when-not-sprinting",
+      "featureTitle": "Implement first-person player movement with WASD keys, pointer lock mouse look, sprint (Shift key) that depletes stamina, and stamina recovery when not sprinting.",
+      "files": [
+        "frontend/src/components/GameScene.tsx",
+        "frontend/src/components/PlayerController.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-shooting-mechanic-left-mouse-click-fires-a-hitscan-ray-from-the-camera-center-each-shot-reduces-ammo-by-1-enemies-hit-lose-50-hp-enemies-that-reach-0-hp-are-removed-from-the-scene",
+      "featureTitle": "Implement a shooting mechanic: left mouse click fires a hitscan ray from the camera center; each shot reduces ammo by 1; enemies hit lose 50 HP; enemies that reach 0 HP are removed from the scene.",
+      "files": [
+        "frontend/src/components/GameScene.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-spawn-15-enemy-bots-as-red-box-meshes-randomly-placed-on-the-terrain-bots-idle-until-the-player-comes-within-100-units-then-chase-the-player-bots-deal-damage-2-hp-normal-5-hp-hardcore-per-frame-when-within-3-units-of-the-player",
+      "featureTitle": "Spawn 15 enemy bots as red box meshes randomly placed on the terrain. Bots idle until the player comes within 100 units, then chase the player. Bots deal damage (2 HP normal / 5 HP hardcore) per frame when within 3 units of the player.",
+      "files": [
+        "frontend/src/components/EnemyBots.tsx",
+        "frontend/src/components/GameScene.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-spawn-20-green-loot-crates-as-small-box-meshes-randomly-placed-on-the-terrain-loot-crates-are-visible-in-the-scene-pickup-logic-may-be-left-as-a-future-feature",
+      "featureTitle": "Spawn 20 green loot crates as small box meshes randomly placed on the terrain. Loot crates are visible in the scene (pickup logic may be left as a future feature).",
+      "files": [
+        "frontend/src/components/GameScene.tsx",
+        "frontend/src/components/LootCrates.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-shrinking-safe-zone-a-radius-value-starts-at-100-and-decreases-by-0-02-each-frame-when-the-player-s-distance-from-origin-exceeds-the-zone-radius-the-player-takes-continuous-damage-1-hp-frame-normal-2-hp-frame-hardcore",
+      "featureTitle": "Implement a shrinking safe zone: a radius value starts at 100 and decreases by 0.02 each frame. When the player's distance from origin exceeds the zone radius, the player takes continuous damage (1 HP/frame normal, 2 HP/frame hardcore).",
+      "files": [
+        "frontend/src/components/GameScene.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-display-a-hud-overlay-showing-current-health-armor-ammo-current-max-enemies-remaining-count-and-live-fps-counter-the-hud-should-be-positioned-in-the-top-left-corner-over-the-game-canvas",
+      "featureTitle": "Display a HUD overlay showing: current Health, Armor, Ammo (current/max), Enemies remaining count, and live FPS counter. The HUD should be positioned in the top-left corner over the game canvas.",
+      "files": [
+        "frontend/src/components/GameScene.tsx",
+        "frontend/src/components/HUD.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-consistent-military-tactical-dark-visual-theme-throughout-the-ui-black-backgrounds-cyan-00ffcc-accent-color-for-borders-and-text-monospace-or-bold-sans-serif-fonts-and-a-fullscreen-canvas-for-the-game-renderer",
+      "featureTitle": "Apply a consistent military/tactical dark visual theme throughout the UI: black backgrounds, cyan (#00ffcc) accent color for borders and text, monospace or bold sans-serif fonts, and a fullscreen canvas for the game renderer.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/HUD.tsx",
+        "frontend/src/components/MainMenu.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

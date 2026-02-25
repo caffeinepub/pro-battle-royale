@@ -1,0 +1,23 @@
+{
+  "backend/main.mo": "Empty Motoko actor serving as a placeholder backend with no implemented functionality.",
+  "feature_evidence.json": "Feature evidence report mapping game features (main menu, 3D world, player movement, shooting, enemy bots, etc.) to their implementing source files, components, and test IDs with confidence ratings.",
+  "frontend-file-summaries.txt": "JSON document providing one-sentence descriptions of each frontend source file's purpose and responsibilities.",
+  "frontend/index.css": "Tailwind base stylesheet defining OKLCH CSS color tokens for light and dark themes used across the app.",
+  "frontend/index.html": "HTML entry point titled 'PRO Battle Royale' that mounts the React app into a root div and loads the main TSX module.",
+  "frontend/src/App.tsx": "Root React component that tracks game-active state and selected settings, rendering either MainMenu or GameScene accordingly.",
+  "frontend/src/components/EnemyBots.tsx": "Spawns 15 red box enemy meshes that idle until the player is within 100 units, then chase and deal proximity damage; enemies are removed when their health reaches zero via raycaster hits.",
+  "frontend/src/components/GameScene.tsx": "Core 3D game scene built with React Three Fiber that composes terrain, fog, lighting, and all subsystems (PlayerController, EnemyBots, LootCrates, ZoneRing, HUD) while managing shared game state including health, ammo, and game-over logic.",
+  "frontend/src/components/HUD.tsx": "Overlay HUD component displaying HP, armor, stamina bars, ammo counter, enemy count, zone radius, FPS, hardcore badge, and a zone-closing warning using cyan monospace styling.",
+  "frontend/src/components/LootCrates.tsx": "Renders 20 static green box meshes at random terrain positions as decorative loot crates.",
+  "frontend/src/components/MainMenu.tsx": "Renders the main menu overlay with graphics quality and hardcore mode settings, and a deploy button that triggers the game start with selected settings.",
+  "frontend/src/components/PlayerController.tsx": "Handles first-person player movement, pointer lock mouse-look, keyboard input, sprinting/stamina, and raycasting-based shooting against enemies each frame.",
+  "frontend/src/components/ZoneRing.tsx": "Renders a shrinking battle-royale zone ring in 3D and applies periodic damage to the player when they are outside the zone boundary.",
+  "frontend/src/hooks/useActor.ts": "Creates and caches an ICP backend actor (authenticated or anonymous) using React Query, and invalidates dependent queries whenever the actor changes.",
+  "frontend/src/hooks/useGameLoop.ts": "Placeholder hook that returns an empty object; actual game loop logic is handled inside components via React Three Fiber's useFrame.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides an Internet Identity authentication context with login/logout, identity state, and status flags, wrapping DFINITY's AuthClient.",
+  "frontend/src/hooks/useQueries.ts": "Empty module placeholder indicating no backend queries are needed for this client-side game.",
+  "frontend/src/index.css": "Global CSS defining Tailwind base layers, CSS custom properties for the dark cyber color theme, and detailed styles for the main menu UI components.",
+  "frontend/src/main.tsx": "Application entry point that mounts the React app wrapped with QueryClientProvider and InternetIdentityProvider.",
+  "frontend/tailwind.config.js": "Tailwind CSS configuration extending the theme with custom fonts, oklch-based color tokens, glow box shadows, and animation keyframes for the game UI.",
+  "project_state.json": "Tracks the project state (version 3) for 'PRO Battle Royale', a Three.js browser-based FPS battle royale game, listing architectural notes, existing features, and known issues."
+}
